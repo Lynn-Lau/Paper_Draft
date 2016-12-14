@@ -1,0 +1,200 @@
+\documentclass[UTF8]{ctexart}
+\usepackage[body={15cm, 23cm}, top=2.5cm]{geometry}
+\usepackage{cite}
+
+\title{基于移动群智感知的蜂窝网络数据收集机制的研究}
+\author{\LaTeX}
+\begin{document}
+% 生成标题
+\maketitle
+\section{选题依据}
+\subsection{研究背景、目的和意义}
+无线电环境地图（Radio Environment Map, REM），是一种描述无线电工作环境的集成时空数据库，可
+提供无线电的多个领域的综合信息，如地理特征、无线电设备的位置及活动、当前可用的服务、历
+史信息等[1]。为了构建REM需要收集无线环境数据，如特定区域无线信号的功率、频率等无线指标,无线
+蜂窝网络的相关指标就是需要收集的一种无线环境数据[2]。由于通信基站和其发射的无线电磁波辐射
+范围较广，数据规模大传统的传感器缺少灵活性，且需要部设大量的设备，造成成本大量增加。
+因此，我们引入移动群智感知的技术来收集蜂窝网络数据。
+
+移动群智感知（Mobile Crowd Sensing, MCS）的概念最早由Raghu K. Ganti等人提出的，是一种
+利用普通的社会群众进行信息感知的数据收集技术[3]。
+它将普通用户的移动设备作为基本感知单元，通过移动互联网进行有意识或无意识的协作，形成
+移动群智感知网络，实现感知任务分发与感知数据收集，然后在云端对这些数据汇集及融合，
+最终用于以人为中心服务的数据交付[4]。MCS进行数据收集的核心思想是将感知任务分配到
+多个参与节点当中，使其能够通过协同工作的方式共同完成数据收集的任务。因此MCS技术
+可以解决蜂窝网络中数据分散，覆盖范围广的问题，并且因为MCS具有的特点，该技术也
+广泛应用于城市感知的数据收集当中，比如收集全城的水质信息[5]，城市中不同地方的
+空气质量数据等[6]。
+
+在利用MCS的方法收集无线蜂窝网络数据的过程中为了获得准确且全面的数据，要使用户尽可能的
+最大化的覆盖到目标感知区域。最大化的覆盖感知区域最直接的办法就是招募更多的感知用户参与
+到感知任务中来，并且通过合适激励机制来激励用户分散开收集蜂窝网络数据[7]。这种方法最简单，
+但是同样也带来一些问题。第一，招募大量的参与者最大化覆盖目标感知区域使每个最小感知区域
+被多次感知，出现数据冗余，当感知区域不断扩大的的时候数据的冗余度会不断增大，增加了数据
+上传的网络负载和感知平台数据处理的复杂度。第二，招募大量的参与者参与感知会增大开销，
+比如网络的带宽消耗增大，感知平台需要付出更多的报酬用于激励用户参加感知任务。因为上述
+问题的存在，所以本文对利用MCS技术岁蜂窝网络数据收集机制的研究进行了研究，目的在于减少
+感知节点的参与，并且降低整个感知系统的开销。
+
+综上所述，本研究的目的就是要设计一种稀疏的感知方式，在保证数据的一定的准确性的前提下，
+选取部分典型的感知节点来感知蜂窝网络数据，然后预测出整个目标感知区域的蜂窝网络数据，
+进而降低数据的冗余度，降低整个感知系统的开销。所以本研究具有一定的研究价值。
+
+\subsection{国内外的研究现状}
+\subsubsection{移动群智感知的研究现状}
+随着智能设备的进一步普及，群智感知的发展也愈加迅速，在实际生活中的应用也越来越广泛，现
+阶段的移动群智感知应用大致可分为3类：环境、公共设施和社会[3]。群智感知的应用之外，相关
+的理论研究也涵盖了群智感知的各个阶段。MCS收集数据大的过程大体可以分成四个阶段，感知任务
+的生成、任务的分发、任务的执行以及数据的整合[8]。感知任务的生成就是确定通过群智感知获取
+的数据要支持应用的类型，如通过收集参与者的个人GPS记录和相关的环境信息（天气、交通状况等）
+来生成环境对个人影响报告[9]。在任务分发阶段，Xiao提出了一种新的任务分发的方法，将任务在
+移动社交网络中分别以在线和离线方式进行任务的分发[10]。在感知任务执行阶段使用piggyback
+的方法能够有效的节省设备的消耗的能量[12]。最后一个阶段的数据传输和整合阶段，通过整合
+已有路由协议提出了适合机会感知数据传输的新的路由协议[13]。
+
+\subsubsection{利用移动群智感知收集蜂窝网络数据的研究现状}
+群智感知技术大量应用于无线环境数据的收集。Shi通过招募参与者对大学的建筑中
+分布的无线接入点的相关信息进行感知，比如Wi-Fi信号的速率、频率和信道等信息，然后将感知到的
+数据整合分析，进而提供给网络维护人员可以根据分析的结果对无线接入点的位置和信号的发射频段
+进行优化[14]。MCS也应用于收集无线蜂窝网络数据，[15]提出了一种使用群智感知
+的方法通过收集蜂窝网络LTE数据的方法，通过感知的数据间接的刻画人类的移动性和蜂窝网络信号
+LTE的覆盖范围。在MCS收集无线环境数据中，感知设备的进行数据感知的时候，其覆盖的范围是必须
+要考虑的因素。为了是感知系统获得较高质量的数据[17-18]，感知系统中通常要设计合适的感知
+系统来激励用户参与到感知任务中[16]，并且在进行任务感知的时候最大化的覆盖到感知区域。
+使用群智感知的方式进行无线环境数据收集的时候，感知区域达到目标感知区域的一定比例是研究
+其他问题的前提条件。在Xiong的文章中提出了在保证目标感知区域全覆盖的前提条件下一种更加
+节能的数据传输的方法[19]。Philipp D等人的文章同样提出了在保证了一定的时空覆盖的比例的
+前提下去研究数据传输过程中其他问题[20]。为了提高感知节点对目标感知区域的覆盖率可是招募
+更多的用户参与到感知任务中来[21]。除了对于目标感知区域的覆盖比例，感知数据的质量问题
+也是非常重要的问题。为了过的高质量的数据，研究者设计了不同的激励机制，在Wen的文章中
+提出了一种数据质量驱动的激励机制，除了激励用户参与到感知任务中来，根据用户提交的感知数据
+质量的不同，感知系统给予不同数量的报酬以促使用户提交高质量的数据[18]。
+
+\subsection{当前存在的问题}
+\subparagraph{现有利用MCS收集无线环境数据机制无法满足蜂窝网络数据收集问题。}
+虽然国内外关于使用MCS的技术进行无线环境数据收集的研究和应用很多，大多数的应用案例是对Wi-Fi
+环境的数据进行收集[14][22-23]，根据我们的调研，使用MCS技术收集蜂窝网络数据的研究几乎没有。
+此外，由于大多数的应用案例是收集Wi-Fi环境数据，所以与之相对应的相关收集方法的特点与蜂窝网络
+数据所固有的特点不相符，比如为了获得对目标感知区域更大的比例招募更多的参与者，对做小感知粒度
+的小区域进行多次的覆盖，进而达到一定的时空覆盖比例。综上所述，现有利用MCS进行无线环境数据
+进行数据收集的机制并不适合对蜂窝网络的数据进行收集。
+
+\subparagraph{为了最大化覆盖目标感知区域使感知数据出现了冗余。}
+在现有的MCS进行数据感知的时候，由于目标感知区域较大，并且要感知的数据范围很广，所以感知系统
+为了更加全面的感知到目标感知区域，最直接的办法就是招募更多的用户参与到感知任务中来。这样的
+做法会带来一些问题，由于蜂窝网络的数据不会随着时间的变化而变化，招募大量的用户多次的对其相关
+数据进行感知会出现移动的冗余，并且数据的冗余度会随着目标区域的增大而增大。此外招募更多的用户
+参与到感知任务中，需要合适的激励机制去激励用户收集高质量的数据，进而感知系统的成本也会增加。
+
+\section{研究目标和主要研究内容}
+\subsection{研究目标}
+由于现有的利用MCS收集无线环境数据的机制无法满足蜂窝网络的数据的收集问题，并且已有的群智感知
+方式为了最大化覆盖感知区域使感知数据出现了冗余的问题。本文的研究目标有两个，第一，将原有MCS
+收集无线环境数据的的方法应用于收集蜂窝网络数据；第二，在保证一定的数据质量的前提下进一步的
+减少感知节点，降低数据的冗余度，减少感知系统成本。
+
+\subsection{主要研究内容}
+在构建无线环境地图使需要收集蜂窝网络数据，由于目前的没有适合基于MCS的收集蜂窝网络数据的方法，
+并且现有群智感知为了保证数据质量造成数据冗余的情况。因此，本研究的主要内容就是提出一种基于
+MCS适合蜂窝网络数据本身特点的稀疏感知的数据收集机制。然后通过控制参与感知节点的数量，并且在
+保证数据质量的前提下完成数据感知，减少数据冗余，降低整体开销。
+
+具体研究内容如下：
+
+\subparagraph{提出适合蜂窝网络数据的特点基于MCS的数据收集机制。}
+在利用群智感知收集环境数据的过程中，具体使用哪种方法与要收集的目标数据的特点有很大的关系。
+由于通信基站发射的无线电磁波的功率几乎是恒定不变的，所以蜂窝网络数据的相关指标并不会随着时间
+的变化而发生变化，只随着地点的不同而不同。现有的基于MCS的数据感知技术几乎对同一个最小的感知
+粒度进行多次感知，不适合收集蜂窝网络数据。因此在本研究中，首先就是要根据蜂窝网络数据的特点
+提出与之相适应的基于MCS的感知方法。
+
+\subparagraph{保证数据质量的前提下采用较少的节点完成感知任务。}
+在利用群智感知的方式进行数据感知时，由于目标感知区域的地理范围分布较广，并且蜂窝网络数据随着
+地点的不同也不同，所以在感知蜂窝网络的数据时候希望能够最大话的覆盖到感知区域。在招募人员进行
+感知任务时，由于感知范围大，可以进行感知任务的感知节点数量较少，所以使用传统的感知方法不能
+完成感知任务。那么，在保证数据质量和覆盖率的前提下使用较少的感知节点完成感知任务也是本研究的
+主要内容之一。
+
+\subparagraph{仿真及实验验证。}
+对本研究提出的新的基于MCS的蜂窝网络数据收集机制感知的数据进行仿真、分析，并验证方法的有效性。
+
+\section{拟解决的关键问题及其研究方法}
+\subsection{拟解决的关键问题}
+\subparagraph{如何将MCS收集无线环境数据的方法应用到收集蜂窝网络数据。}
+针对目前使用MCS进行无线环境数据的收集的方法并不适合收集蜂窝网络数据，并且通存在着额外的激励
+机制去激励用户参与感知带来的开销大的问题，首要的问题是如何设计适合利用MCS去收集蜂窝网络数据
+的问题。
+
+\subparagraph{通过少量感知节点的感知数据来获得感知区域的感知数据。}
+因为蜂窝网络数据其本身具有的特点是时空相关性较差，并且原有的感知方式中是每一个最小目标
+感知区域都需要在某一段时间内被多个感知节点感知，因此当感知区域增大，节点增多的额时候，
+整个感知区域的数据冗余度增大。如果使用少量的节点去感知数据，那么如何通过这些验本节点来
+得到整个目标感知区域的数据，这也是需要解决的问题。
+
+\subsection{拟采用的研究方法}
+\subparagraph{1. 根据蜂窝网络数据的时空相关性降低感知数据的频率。}
+在进行蜂窝网数据进行收集的时，我们选择在目标感知区域的电磁波的功率作为研究对象。定义
+将目标感知区域$L$分成$n$个最小的感知粒度，则$L=\left\{L_1,L_2,L_3,\dots,L_n\right\}$,
+$L_p (p \in n)$表示第$p$个最小的感知区域。
+将目标感知区域的感知时间$T$分成$m$个时间段，则$T=\left\{T_1,T_2,T_3,\dots,L_m\right\}$,
+$T_q (q \in m)$表示第$q$个感知时间段。
+将感知到的蜂窝网络电磁波信号的功率值定义为$P$。那么，$P_{pq}$表示为在第$p$个最小感知区域
+内第$q$个时间段感知到的蜂窝网络电磁波的功率值。
+
+首先，我们感知部分蜂窝网络的数据作为样本数据，对样本数据中电磁波的相关指标
+做时间和地点的变化进行研究，根据其时空相关程度以及变化规律来确定利用MCS对蜂窝网络数据
+感知的频率和地点。然后，在
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{thebibliography}{99}
+  \bibitem{1} Pesko M, Javornik T, Štular M, et al. The comparison of methods for constructing the radio frequency layer of radio environment
+  map using participatory measurements[C]. 2013.
+  \bibitem{2} Perez-Romero J, Zalonis A, Boukhatem L, et al. On the use of radio environment maps for interference management in heterogeneous
+  networks[J]. IEEE Communications Magazine, 2015, 53(8):184-191.
+  \bibitem{3} Ganti R K, Ye F, Lei H. Mobile crowdsensing: current state and future challenges[J]. Communications Magazine IEEE, 2011, 49(11):32-39.
+  \bibitem{4} Ji S, Zheng Y, Li T. Urban sensing based on human mobility[C]// ACM International Joint Conference. 2016:1040-1051.
+  \bibitem{5} Kim, Sunyoung, et al. Creek watch: pairing usefulness and usability for successful citizen science.Proceedings of the SIGCHI
+  Conference on Human Factors in Computing Systems. ACM, 2011.
+  \bibitem{6} Rana R K, Chou C T, Kanhere S S, et al. Ear-phone: an end-to-end participatory urban noise mapping system[C]// ACM/IEEE International
+  Conference on Information Processing in Sensor Networks. ACM, 2009:105-116.
+  \bibitem{7} Wang L, Zhang D, Wang Y, et al. Sparse mobile crowdsensing: challenges and opportunities[J]IEEE Communications Magazine, 2016, 54(7):161-167.
+  \bibitem{8} Zhang D, Wang L, Xiong H, et al. 4W1H in mobile crowd sensing[J]. IEEE Communications Magazine, 2014, 52(8):42-48.
+  \bibitem{9} Rachuri K K, Mascolo C, Musolesi M, et al. SociableSense: Exploring the Trade-offs of Adaptive Sampling and Computation Offloading for Social
+  Sensing[C]// International Conference on Mobile Computing and Networking, MOBICOM 2011, Las Vegas, Nevada, Usa, September. 2011:73-84.
+  \bibitem{10} Xiao M, Wu J, Huang L, et al. Multi-task assignment for crowdsensing in mobile social networks[C]// Computer Communications. IEEE, 2015.
+  \bibitem{11} Liu Y, Guo B, Wang Y, et al. TaskMe: multi-task allocation in mobile crowd sensing[J]. 2016.
+  \bibitem{12} Lane N D, Chon Y, Zhou L, et al. Piggyback CrowdSensing (PCS): energy efficient crowdsourcing of mobile sensor data by exploiting smartphone
+  app opportunities[C]// ACM Conference on Embedded Networked Sensor Systems. 2013:1-14.
+  \bibitem{13} Verma A, Srivastava A. Integrated Routing Protocol for Opportunistic Networks[J]. 2011.
+  \bibitem{14} Shi J, Meng L, Striegel A, et al. A walk on the client side: Monitoring enterprise Wifi networks using smartphone channel scans[C]// IEEE
+  INFOCOM 2016 - IEEE Conference on Computer Communications. 2016.
+  \bibitem{15} Foremski P, Gorawski M, Grochla K, et al. Energy-Efficient Crowdsensing of Human Mobility and Signal Levels in Cellular Networks[J]. Sensors,
+  2015, 15(9):22060-22088.
+  \bibitem{16} Deterding S, Dixon D, Khaled R, et al. From game design elements to gamefulness: defining "gamification"[C]// International Academic Mindtrek
+  Conference: Envisioning Future Media Environments. ACM, 2011:9-15.
+  \bibitem{17} Kawajiri R, Shimosaka M, Kashima H. Steered crowdsensing: incentive design towards quality-oriented place-centric crowdsensing[C]// ACM
+  International Joint Conference on Pervasive and Ubiquitous Computing. 2014:691-701.
+  \bibitem{18} Wen Y, Shi J, Zhang Q, et al. Quality-Driven Auction-Based Incentive Mechanism for Mobile Crowd Sensing[J]. Vehicular Technology IEEE
+  Transactions on, 2015, 64(9):4203-4214.
+  \bibitem{19} Xiong H, Zhang D, Wang L, et al. EMC3: Energy-efficient Data Transfer in Mobile Crowdsensing under Full Coverage Constraint[J]. IEEE
+  Transactions on Mobile Computing, 2014, 14(7):1-1.
+  \bibitem{20} Philipp D, Stachowiak J, Alt P, et al. DrOPS: Model-driven optimization for Public Sensing systems[C]// IEEE International Conference on
+  Pervasive Computing and Communications. IEEE Computer Society, 2013:185-192.
+  \bibitem{21} Wang L, Zhang D, Wang Y, et al. Sparse mobile crowdsensing: challenges and opportunities[J]. IEEE Communications Magazine, 2016, 54(7):161-167.
+  \bibitem{22} Wu D, Liu Q, Li Y, et al. Adaptive Lookup of Open WiFi Using Crowdsensing[J]. IEEE/ACM Transactions on Networking, 2016:1-14.
+  \bibitem{23} Robol F, Viani F, Polo A, et al. Opportunistic crowd sensing in WiFi-enabled indoor areas[C]// IEEE International Symposium on Antennas and
+  Propagation \& Usnc/ursi National Radio Science Meeting. IEEE, 2015.
+
+
+\end{thebibliography}
+\end{document}

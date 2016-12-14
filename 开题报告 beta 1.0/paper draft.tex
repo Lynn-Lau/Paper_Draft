@@ -1,0 +1,99 @@
+\documentclass[UTF8]{ctexart}
+\usepackage[body={15cm, 23cm}, top=2.5cm]{geometry}
+\usepackage{cite}
+
+\title{基于移动群智感知的蜂窝网络数据收集机制的研究}
+\author{\LaTeX}
+\begin{document}
+\maketitle
+
+\section{选题依据}
+\subsection{研究背景、目的和意义}
+
+%%无线电环境地图（Radio Environment Map, REM）是一种描述无线电工作环境的集成时空数据库，用于表征无线电环境信息，它将无线环境信息与城市电子地图结合在一起，融合地理位置信
+%%息、时间信息、无线信息，构成一个多维度的无线频谱图。要构建一个完整的REM所需要的收集的数据包括感知区域的信号功率、数据采集时间及
+%%地理位置、信号频率等无线信号指标，其中蜂窝网络数据是感知数据中不可取少的一种数据。在构建无线环境地图收集数据过程中，由于无线环境数据
+%%分布范围广、分散，所以我们引入了移动群智感知（Mobile Crowd Sensing, MCS）技术，通过MCS技术来收集无线环境地图的数据。
+
+移动群智感知（Mobile Crowd Sensing, MCS）的概念最早由Raghu K. Ganti等人提出的，是一种利用普通的社会群众进行信息感知的数据收集技术。
+它将普通用户的移动设备作为基本感知单元，通过移动互联网进行有意识或无意识的协作，形成移动群智感知网络，
+实现感知任务分发与感知数据收集，然后在云端对这些数据汇集及融合，最终用于以人为中心服务的
+数据交付。MCS进行数据收集的核心思想是将感知任务分配到多个参与节点当中，使其能够通过协同工作的方式共同完成数据收集的任务。移动群智感知技术的
+特点恰好可以解决收集蜂窝网络中数据分散，覆盖范围广的问题，所以MCS被应用城市感知的数据收集当中，比如收集全城的水质信息，城市中不同地方的空气质
+量，应用于收集城市中无线环境信息和构建无线环境地图。%（相关技术的术语，历史）
+
+利用MCS也可以收集无线蜂窝网络数据，由于通信基站发射的电磁波在空气中传播的时候会出现衰减，所以移动终端与基站距离不同，其收到无线信号的功率也不同，蜂窝网络的数据质量不同。
+通信基站的分布以及其发射的电磁波辐射的范围较广，所以在利用MCS的方法收集无线蜂窝网络数据的过程中覆盖的范围也要广，并且为了获得准确的数据，在数据收集的过程
+中要最大化的覆盖到目标感知区域。最大化的覆盖感知区域最直接的办法就是招募更多的感知用户参与到感知任务重来，并且通过合适激励机制来激励用户分散开收集蜂窝网络数据，这种方法最简单，但是同样也带来
+一些问题。第一，招募大量的参与者最大化覆盖目标感知区域使每个最小感知区域被多次感知，出现数据
+冗余，当感知区域不断扩大的的时候数据的冗余度会不断增大，增加了数据上传的网络负载和感知平台数据
+处理的复杂度。第二，招募大量的参与者参与感知会增大开销，比如网络的带宽消耗增大，感知平台需要付
+出更多的报酬用于激励用户参加感知任务。因为上述问题的存在，所以本文对利用MCS技术岁蜂窝网络数据收集机制的研究进行了研究，目的在于减少感知节点的参与，并且降低整个感知系统的开销。
+
+综上所述，本研究的目的就是要设计一种稀疏的感知方式，在保证数据的一定的准确性的前提下，选取部分典型的感知节点来感知蜂窝网络数据，然后预测出整个目标感知区域的蜂窝网络数据，进而
+降低数据的冗余度，降低整个感知系统的开销。因此本研究具有一定的研究价值。%（课题来源，当前发展存在的问题）
+
+%%综上所述，本研究的目的和动机就是针对本项目收集蜂窝网络数据的机制进行研究，对利
+%%用传统的群智感知的方法收集蜂窝网络数据中存在的问题，如直接增加感知用户带来的数据冗余度增大、成
+%%本增大等问题进行优化，使在证一定的覆盖比例和数据质量的情况下，进一步减少感知设备的数量并且降低
+%%感知系统的成本。（研究的目的和动机）
+
+%%本文中提出了一种新的基于移动群智感知的蜂窝网络数据收集的机制，该方法可以减少感知参与设备的数量，
+%%降低感知系统的开销。
+%%
+%%\subsection{国内外研究现状}
+%%\subsubsection{移动群智感知的发展现状}
+%%MCS将普通用户的移动设备作为基本感知单元，通过移动互联网进行有意识或无意识的协作，形成移动群智感知网络，实现感知任务分发与
+%%感知数据收集，然后在云端对这些数据汇集及融合，最终用于群智提取以及以人为中心服务的数据交付。
+%%MCS与传统的无线传感器网络相比，MCS具有网络部署成本低、维护简单、系统可扩展性强以及采集数据类型广泛等优势[14][15]。除此之外，
+%%MCS可以高效的支持多种应用，在明确的数据要求之下能够支持多种应用之间的重用。作为一种新的重要的感知手段，MCS已经用于社会生活的
+%%方方面面，比如将MCS应用于环境检测,比如CommonSense[7]；还可以应用到公共设施的检测，比如检测道路拥堵状况[11][12]，
+%%道路状况的检测[14]。
+
+%%利用MCS收集数据大的过程大体可以分成四个阶段，感知任务的生成、任务的分发、任务的执行以及数据的整合。感知任务的生成就是确定通过群智感知获取的数据要支持哪些应用，
+%%比如[4W1H in Mobile Crowd Sensing][4]中通过收集参与者的个人GPS记录和相关的环境信息（天气、交通状况等）来生成环境对个人影响报告。在任务分发阶段，[Multi-Task
+%%Assignment for CrowdSensing in Mobile Social Networks]提出了一种新的任务分发的方法，将任务在移动社交网络中分别以在线和离线方式进行任务的分发。[TaskMe:
+%%Multi-Task Allocation in Mobile Crowd Sensing]文章中提出的任务分发的方法分别对应两个不同的感知场景，一个是感知参与者少而感知任务多（FPMT），另外一个是感知
+%%参与者多而感知任务少（MPFT），这两种不同的场景下对应着两种不通的算法，据能有效地提高任务分发的效率。在感知任务执行阶段[“Piggyback Crowdsensing (PCS): Ener-gy
+%%Efficient Crowdsourcing of Mobile Sensor Data by Exploiting Smartphone App Opportunities]使用piggyback的方法能够有效的节省设备的消耗的能量。最后一个阶段
+%%的数据传输和整合阶段，[Integrated Routing Protocol for Opportunistic Networks]通过整合已有路由协议提出了适合机会感知数据传输的新的路由协议。
+
+%%群智感知中，为了获得质量好的数据和较小的系统成本，使用了多种的激励机制，[群智感知激励机制研究综述]比如包括报酬支付激励、逆向拍卖激励、全付拍卖机制等激励机制。这些激励机制
+%%设计的目的就是激励更多用户参与到感知任务中来，进而覆盖到更多的目标感知区域，激励用户上传质量高的数据。此外[Sell your experiences: a market mechanism based incentive
+%%for participatory sensing. Pervasive Computing and Communications]中的逆向拍卖机制的设计就是既要保证激励用户上传高质量的感知数据，又要降低感知系统的成本。
+
+%%\subsubsection{利用MCS收集蜂窝网络数据的研究现状}
+
+%%据我们所知在国内外的研究中，单独使用移动群智感知的方法来收集蜂窝网络的数据的研究非常少，使用移动群智感知的方法收集无线环境信息的研究有一些，几乎都是收集无线局
+%%域网的中的相关信息。[A Walk on the Client Side: Monitoring Enterprise Wifi Networks Using Smartphone Channel Scans]中介绍了通过招募一些参与者对大学中
+%%分布的无线局域网的相关信息进行感知的应用，通过参与者长时间对无线接入点发射的Wi-Fi信号的信息进行感知，数据收集，然后将所有参与者的数据进行整合分析，网络维护人员
+%%可以根据分析的结果重新配置无线接入点的位置和信号的发射频段，最终优化无线局域网配置。[Opportunistic Crowd Sensing in WiFi-enabled Indoor Areas]利用机会感知的
+%%方法来监测建筑或者公共场所中已经设置的WiFi网络，提供Wi-Fi网络的工作情况。[Adaptive Lookup of Open WiFi Using Crowdsensing]通过线上和线下的群智感知的方式将参与者附近
+%%的无线接入点的位置提供给感知系统，然后感知系统将数据整合之后向用户提供机会式网络接入服务。[Energy-Efficient Crowdsensing of Human Mobility and Signal Levels in Cellular Networks]
+%%提出了一种有够节约能耗的使用群智感知的方法通过收集蜂窝网络LTE数据的方法，通过感知的数据间接的刻画人类的移动性和蜂窝网络信号LTE的覆盖范围。
+
+%%在国内外对于通过MCS的方法收集无线数据中，为了提高数据质量都激励用户最大化的覆盖目标感知区域，在保证了感知设备近似的将目标感知区域全覆盖
+%%之后可以感知到更加完备的数据[4W1H in Mobile Crowd Sensing][Mobile Crowd Sensing and Computing: The Review of an Emerging Human-Powered
+%%Sensing Paradigm]。同时也要降低整个感知系统的成本开销，[EMC3: Energy-Efficient Data Transfer in Mobile Crowdsensing under Full Coverage Constraint]
+%%提出了在保证目标感知区域全覆盖的前提条件下一种更加节能的数据传输的方法。[Supporting energy-efficient uploading strategies for contin- uous sensing
+%%applications on mobile phones]在保证一定的覆盖比例的前提下提出了几种优化数据上传的方法，进而降低了整个感知系统的能耗。
+
+%%\subsection{当前存在的问题}
+%%\subparagraph{国内外的研究还未将MCS专门应用与手机蜂窝网络数据。}
+
+%%目前国内外关于群智感知的应用研究中还没有专门将其应用到收集蜂窝网络数据，并且对蜂窝网络数据收集的方法也寥寥无几。此外在已有的将移动群智感知应用到收集无线局域网数据的研究中
+
+
+
+
+%%很多研究关于如何利用群智感知的方法收集环境数据，比如特定区
+%%域的空气质量[Energy-Efficient Data Transfer in Mobile Crowdsensing under Full Coverage
+%%Constraint]、无线信号覆盖的比例[Energy-Efficient Crowdsensing of Human Mobility and Signal
+%%Levels in Cellular Networks]。
+
+%%\begin{thebibliography}
+%%  \bibitem{DUTTA P,  AOKI P M.{2009}} Common sense: participatory urban sensing using a network of handheld air quality monitors. Proceedings of the 2009 ACM Conference on Embedded Networked Sensor Systems, SenSys 2009, Berkeley, California, USA, 2009: 349-350.
+
+%%\end{thebibliography}
+
+\end{document}
